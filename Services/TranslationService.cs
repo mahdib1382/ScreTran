@@ -1,4 +1,4 @@
-﻿using System.Net.Http;
+using System.Net.Http;
 using System.Web;
 using GTranslate.Translators;
 using Newtonsoft.Json.Linq;
@@ -17,50 +17,48 @@ public class TranslationService : ITranslationService
     }
 
     /// <summary>
-    /// Translate input from english to russian.
+    /// Translate input to target language.
     /// </summary>
     /// <param name="input">Input text.</param>
     /// <param name="translator">Translator type.</param>
+    /// <param name="targetLanguage">Target language code.</param>
     /// <returns>Translated text.</returns>
-    public string Translate(string input, Enumerations.Translator translator)
+    public string Translate(string input, Enumerations.Translator translator, string targetLanguage = "fa")
     {
-        return Task.Run(async () => await TranslateAsync(input, translator)).Result;
+        return Task.Run(async () => await TranslateAsync(input, translator, targetLanguage)).Result;
     }
 
     /// <summary>
-    /// Translate input from english to russian asynchroniously.
+    /// Translate input to target language asynchronously.
     /// </summary>
     /// <param name="input">Input text.</param>
     /// <param name="translator">Translator type.</param>
+    /// <param name="targetLanguage">Target language code.</param>
     /// <returns>Translated text.</returns>
-    private async Task<string> TranslateAsync(string input, Enumerations.Translator translator)
+    private async Task<string> TranslateAsync(string input, Enumerations.Translator translator, string targetLanguage = "fa")
     {
         if (translator == Enumerations.Translator.Google)
-            return await TranslateGoogleAsync(input); 
-            // Не использовать!!! Ошибка TOO MANY REQUESTS
-            //return (await _googleTranslator.TranslateAsync(input, "ru")).Translation;
+            return await TranslateGoogleAsync(input, targetLanguage);
         if (translator == Enumerations.Translator.Yandex)
-            return (await _yandexTranslator.TranslateAsync(input, "ru")).Translation;
+            return (await _yandexTranslator.TranslateAsync(input, targetLanguage)).Translation;
         if (translator == Enumerations.Translator.Bing)
-            return (await _bingTranslator.TranslateAsync(input, "ru")).Translation;
+            return (await _bingTranslator.TranslateAsync(input, targetLanguage)).Translation;
 
         return input;
     }
 
     /// <summary>
-    /// Translate input from english to russian GoogleTranslate asynchroniously.
+    /// Translate input to target language using GoogleTranslate asynchronously.
     /// </summary>
-    /// <param name="input">input text.</param>
+    /// <param name="input">Input text.</param>
+    /// <param name="targetLanguage">Target language code.</param>
     /// <returns>Translated text.</returns>
-    public async Task<string> TranslateGoogleAsync(string input)
+    public async Task<string> TranslateGoogleAsync(string input, string targetLanguage = "fa")
     {
-        var to = "ru";
-        var url = $"https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl={to}&dt=t&q={HttpUtility.UrlEncode(input)}";
+        var url = $"https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl={targetLanguage}&dt=t&q={HttpUtility.UrlEncode(input)}";
 
         using var client = new HttpClient();
         var response = await client.GetStringAsync(url).ConfigureAwait(false);
         return string.Join(string.Empty, JArray.Parse(response)[0].Select(x => x[0]));
     }
 }
-
-
