@@ -1,4 +1,4 @@
-﻿namespace ScreTran;
+namespace ScreTran;
 public class Enumerations
 {
     public enum Translator
@@ -14,5 +14,6 @@ public class Enumerations
         Korean,
         Chinese,
         Japanese,
+        Persian, // اضافه کردن فارسی
     }
 }
