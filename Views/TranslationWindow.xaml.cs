@@ -1,10 +1,10 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ScreTran;
 
 /// <summary>
-/// Логика взаимодействия для SelectionWindow.xaml
+/// Interaction logic for TranslationWindow.xaml
 /// </summary>
 public partial class TranslationWindow : Window
 {
