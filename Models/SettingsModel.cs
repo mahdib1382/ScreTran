@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using RawInput;
 
 namespace ScreTran;
@@ -53,7 +53,6 @@ public partial class SettingsModel : ObservableObject
     [ObservableProperty]
     private WindowPositionModel _translationWindowPosition;
 
-
     public SettingsModel()
     {
         // Load default values.
@@ -61,7 +60,6 @@ public partial class SettingsModel : ObservableObject
 
         SelectionWindowPosition = new WindowPositionModel();
         TranslationWindowPosition = new WindowPositionModel();
-
     }
 
     /// <summary>
